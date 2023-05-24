@@ -23,18 +23,6 @@
       "placeholder": "Enter your password",
       "fieldSize": "w-100 h-sm",
       "passwordVisible": true
-    },
-    {
-      "icon": "verified_user",
-      "fieldSize": "w-100 h-sm",
-      "option": [
-        "select user role",
-        "admin",
-        "member",
-        "client",
-        "manager",
-        "vendor"
-      ]
     }
   ],
   "button": { "type": "button", "text": "sign in", "fieldSize": "h-sm" },

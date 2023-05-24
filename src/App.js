@@ -1,7 +1,12 @@
 import { ThemeProvider } from "./context/Themes";
 import { LoaderProvider } from "./context/Preloader";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Overview, Documentation, ChangeLog, Error } from "./pages/supports";
+import {
+  // Overview,
+  Documentation,
+  ChangeLog,
+  Error,
+} from "./pages/supports";
 import {
   Avatars,
   Alerts,
@@ -73,7 +78,7 @@ export default function App() {
 
             {/* Supports Pages */}
             <Route path="*" element={<Error />} />
-            <Route path="/" element={<Ecommerce />} />
+            <Route path="/" element={<Login />} />
             <Route path="/documentation" element={<Documentation />} />
             <Route path="/changelog" element={<ChangeLog />} />
           </Routes>
