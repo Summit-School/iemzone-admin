@@ -7,7 +7,13 @@ const users = async () => {
   return response.data;
 };
 
+const user = async (id) => {
+  const response = await axios.get(`${URL}/user/${id}`);
+  return response.data;
+};
+
 const authServices = {
+  user,
   users,
 };
 

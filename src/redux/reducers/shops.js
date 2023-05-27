@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import usersServices from "../services/users";
+import shopsServices from "../services/shops";
 
 const initialState = {
-  users: [],
-  user: null,
+  shops: [],
+  shop: null,
 };
 
-export const getUsers = createAsyncThunk("auth/getUsers", async (thunkAPI) => {
+export const getShops = createAsyncThunk("shop/getShops", async (thunkAPI) => {
   try {
-    return await usersServices.users();
+    return await shopsServices.shops();
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -19,11 +19,11 @@ export const getUsers = createAsyncThunk("auth/getUsers", async (thunkAPI) => {
   }
 });
 
-export const getUser = createAsyncThunk(
-  "auth/getUser",
-  async (userId, thunkAPI) => {
+export const getShop = createAsyncThunk(
+  "shop/getShop",
+  async (id, thunkAPI) => {
     try {
-      return await usersServices.user(userId);
+      return await shopsServices.shop(id);
     } catch (error) {
       const message =
         (error.response &&
@@ -37,24 +37,24 @@ export const getUser = createAsyncThunk(
   }
 );
 
-export const authSlice = createSlice({
-  name: "users",
+export const shopSlice = createSlice({
+  name: "shops",
   initialState,
   reducers: {
     reset: (state) => {},
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getUsers.fulfilled, (state, action) => {
-        state.users = action.payload;
+      .addCase(getShops.fulfilled, (state, action) => {
+        state.shops = action.payload;
       })
-      .addCase(getUser.fulfilled, (state, action) => {
-        state.user = action.payload;
+      .addCase(getShop.fulfilled, (state, action) => {
+        state.shop = action.payload;
       });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = authSlice.actions;
+export const { reset } = shopSlice.actions;
 
-export default authSlice.reducer;
+export default shopSlice.reducer;

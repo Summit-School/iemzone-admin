@@ -17,3 +17,5 @@ export { default as Register } from "./Register";
 export { default as Settings } from "./Settings";
 export { default as UserList } from "./UserList";
 export { default as UserProfile } from "./UserProfile";
+export { default as ShopList } from "./ShopList";
+export { default as ShopProfile } from "./ShopProfile";

@@ -14,19 +14,19 @@ import {
   ActivityCard,
 } from "../../components/cards";
 import PageLayout from "../../layouts/PageLayout";
-import data from "../../data/master/userProfile.json";
+import data from "../../data/master/shopProfile.json";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../redux/reducers/users";
+import { getShop } from "../../redux/reducers/shops";
 import { useParams } from "react-router-dom";
 
-export default function UserProfile() {
+export default function ShopProfile() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const stateUser = useSelector((state) => state.users.user);
-  const user = stateUser?.user;
+  const shopDetails = useSelector((state) => state.shops.shop);
+  const shop = shopDetails?.shop;
 
   useEffect(() => {
-    dispatch(getUser(id));
+    dispatch(getShop(id));
   }, [id]);
 
   return (
@@ -34,7 +34,7 @@ export default function UserProfile() {
       <Row>
         <Col xl={12}>
           <CardLayout>
-            <Breadcrumb title="user profile">
+            <Breadcrumb title="shop profile">
               {data?.breadcrumb.map((item, index) => (
                 <Item key={index} className="mc-breadcrumb-item">
                   {item.path ? (
@@ -51,17 +51,17 @@ export default function UserProfile() {
         </Col>
         <Col xl={5}>
           <CardLayout>
-            <CardHeader title="user information" dotsMenu={data?.dotsMenu} />
-            <Box className="mc-user-group">
+            <CardHeader title="shop information" dotsMenu={data?.dotsMenu} />
+            <Box className="mc-shop-group">
               <Box className="mc-user-profile">
                 <RoundAvatar
-                  src={`${process.env.REACT_APP_ENDPOINT}/${user?.avatar}`}
+                  src={`${process.env.REACT_APP_ENDPOINT}/${shop?.profilePicture}`}
                   alt={data?.profile.alt}
                   size={data?.profile.size}
                 />
                 <DuelText
-                  title={`${user?.name.firstName} ${user?.name.lastName}`}
-                  descrip={data?.profile.username}
+                  title={shop?.name}
+                  descrip={`@${shop?.slug}`}
                   size={data?.profile.size}
                 />
               </Box>
@@ -69,16 +69,20 @@ export default function UserProfile() {
                 <DivideTitle title="communication" className="mb-4" />
                 <List className="mc-user-metalist">
                   <Item>
+                    <Icon>{`key`}</Icon>
+                    <Text as="span">{shop?.userId}</Text>
+                  </Item>
+                  <Item>
                     <Icon>{`phone_in_talk`}</Icon>
-                    <Text as="span">{user?.phone}</Text>
+                    <Text as="span">{shop?.phone}</Text>
                   </Item>
                   <Item>
                     <Icon>{`feed`}</Icon>
-                    <Text as="span">{user?.email}</Text>
+                    <Text as="span">{shop?.email}</Text>
                   </Item>
                   <Item>
-                    <Icon>{`lock`}</Icon>
-                    <Text as="span">{user?.status}</Text>
+                    <Icon>{`house`}</Icon>
+                    <Text as="span">{shop?.address}</Text>
                   </Item>
                 </List>
               </Box>
@@ -86,20 +90,35 @@ export default function UserProfile() {
                 <DivideTitle title={data?.bio.title} className="mb-3" />
                 <Text className="mc-user-bio mb-4">{data?.bio.descrip}</Text>
               </Box> */}
-              {/* <Box>
+              <Box>
                 <DivideTitle title="elsewhere" className="mb-4" />
                 <Box className="mc-user-social">
-                  {data?.social.map((item, index) => (
-                    <Anchor
-                      key={index}
-                      href={item.path}
-                      text={item.type}
-                      iconClass={item.icon}
-                      className={item.type}
-                    />
-                  ))}
+                  <Anchor
+                    href={shop?.faceook}
+                    text={"Facebook"}
+                    iconClass={"icofont-facebook"}
+                    className={"facebook"}
+                  />
+                  <Anchor
+                    href={shop?.instagram}
+                    text={"Instagram"}
+                    iconClass={"icofont-instagram"}
+                    className={"instagram"}
+                  />
+                  <Anchor
+                    href={shop?.twitter}
+                    text={"Twitter"}
+                    iconClass={"icofont-twitter"}
+                    className={"twitter"}
+                  />
+                  <Anchor
+                    href={shop?.twitter}
+                    text={"Youtube"}
+                    iconClass={"icofont-youtube-play"}
+                    className={"youtube"}
+                  />
                 </Box>
-              </Box> */}
+              </Box>
             </Box>
           </CardLayout>
         </Col>
@@ -109,7 +128,7 @@ export default function UserProfile() {
               <FloatCard
                 variant={"sm purple"}
                 digit={10}
-                title={"total orders"}
+                title={"total income"}
                 icon={"shopping_cart"}
               />
             </Col>
@@ -117,7 +136,7 @@ export default function UserProfile() {
               <FloatCard
                 variant={"sm yellow"}
                 digit={10}
-                title={"total products bought"}
+                title={"total cashouts"}
                 icon={"hotel_class"}
               />
             </Col>
@@ -125,7 +144,7 @@ export default function UserProfile() {
               <FloatCard
                 variant={"sm green"}
                 digit={10}
-                title={"total money spent"}
+                title={"account balance"}
                 icon={"shopping_bag"}
               />
             </Col>

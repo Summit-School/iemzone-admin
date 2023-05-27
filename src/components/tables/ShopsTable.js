@@ -14,7 +14,7 @@ import {
 } from "../elements";
 import userInfo from "../../data/master/userList.json";
 
-export default function UsersTable({ thead, tbody }) {
+export default function ShopsTable({ thead, tbody }) {
   const [data, setData] = useState([]);
   const [userData, setUserData] = React.useState("");
   const [editModal, setEditModal] = React.useState(false);
@@ -70,7 +70,7 @@ export default function UsersTable({ thead, tbody }) {
                 <Box className="mc-table-check">
                   <Input
                     type="checkbox"
-                    name={item.name.firstName}
+                    name={item.name}
                     checked={item?.isChecked || false}
                     onChange={handleCheckbox}
                   />
@@ -80,10 +80,10 @@ export default function UsersTable({ thead, tbody }) {
               <Td title={item.name}>
                 <Box className="mc-table-profile">
                   <Image
-                    src={`${process.env.REACT_APP_ENDPOINT}/${item.avatar}`}
+                    src={`${process.env.REACT_APP_ENDPOINT}/${item.profilePicture}`}
                     alt={item.alt}
                   />
-                  <Text>{item.name.firstName}</Text>
+                  <Text>{item.name}</Text>
                 </Box>
               </Td>
               {/* <Td title={item?.role}>
@@ -112,7 +112,6 @@ export default function UsersTable({ thead, tbody }) {
                 </Box>
               </Td> */}
               <Td title={item.email}>{item.email}</Td>
-              <Td title={item.password}>{item.password}</Td>
               <Td title={item.phone}>{item.phone}</Td>
               {/* <Td title={item.status}>
                 {item.status === "approved" && (
@@ -129,7 +128,7 @@ export default function UsersTable({ thead, tbody }) {
               <Td>
                 <Box className="mc-table-action">
                   <Anchor
-                    href={`/user-profile/${item._id}`}
+                    href={`/shop-profile/${item._id}`}
                     title="View"
                     className="material-icons view"
                   >

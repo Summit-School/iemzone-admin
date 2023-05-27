@@ -1,8 +1,8 @@
 {
   "breadcrumb": [
     { "path": "/", "text": "home" },
-    { "path": "/user-list", "text": "user-list" },
-    { "text": "user-profile" }
+    { "path": "/shop-list", "text": "shop-list" },
+    { "text": "shop-profile" }
   ],
   "dotsMenu": {
     "dots": "more_horiz",
@@ -17,7 +17,7 @@
     "alt": "avatar",
     "size": "lg",
     "fullname": "miron mahmud",
-    "username": "@iemzoneuser"
+    "shopname": "@iemzoneshop"
   },
   "contact": [
     { "icon": "phone_in_talk", "text": "+91 987-654-3210" },
@@ -57,7 +57,7 @@
     }
   ],
   "activity": {
-    "title": "user activities",
+    "title": "shop activities",
     "dotsMenu": {
       "dots": "more_horiz",
       "dropdown": [

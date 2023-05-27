@@ -13,7 +13,6 @@ import { getUsers } from "../../redux/reducers/users";
 export default function UserList() {
   const stateUsers = useSelector((state) => state.users.users);
   const users = stateUsers?.users;
-  console.log(users);
   const dispatch = useDispatch();
 
   useEffect(() => {

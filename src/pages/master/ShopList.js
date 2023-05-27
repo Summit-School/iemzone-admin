@@ -1,22 +1,21 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import { CardLayout, FloatCard } from "../../components/cards";
-import ProductsTable from "../../components/tables/ProductsTable";
+import { Anchor, Item } from "../../components/elements";
+import { CardLayout, CardHeader, FloatCard } from "../../components/cards";
+import { Breadcrumb, Pagination } from "../../components";
 import LabelField from "../../components/fields/LabelField";
-import { Pagination, Breadcrumb } from "../../components";
-import Anchor from "../../components/elements/Anchor";
+import ShopsTable from "../../components/tables/ShopsTable";
 import PageLayout from "../../layouts/PageLayout";
-import data from "../../data/master/productList.json";
+import data from "../../data/master/shopList.json";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../redux/reducers/products";
+import { getShops } from "../../redux/reducers/shops";
 
-export default function ProductList() {
+export default function ShopList() {
+  const shops = useSelector((state) => state.shops.shops);
   const dispatch = useDispatch();
-  const productsList = useSelector((state) => state.products.products);
-  const products = productsList?.products;
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getShops());
   }, []);
 
   return (
@@ -26,7 +25,7 @@ export default function ProductList() {
           <CardLayout>
             <Breadcrumb title={data?.pageTitle}>
               {data?.breadcrumb.map((item, index) => (
-                <li key={index} className="mc-breadcrumb-item">
+                <Item key={index} className="mc-breadcrumb-item">
                   {item.path ? (
                     <Anchor className="mc-breadcrumb-link" href={item.path}>
                       {item.text}
@@ -34,13 +33,13 @@ export default function ProductList() {
                   ) : (
                     item.text
                   )}
-                </li>
+                </Item>
               ))}
             </Breadcrumb>
           </CardLayout>
         </Col>
         {data?.float.map((item, index) => (
-          <Col key={index} sm={6} lg={4}>
+          <Col xl={4} key={index}>
             <FloatCard
               variant={item.variant}
               digit={item.digit}
@@ -51,24 +50,23 @@ export default function ProductList() {
         ))}
         <Col xl={12}>
           <CardLayout>
-            <Row>
-              {data?.product.filter.map((item, index) => (
-                <Col xs={12} sm={6} md={4} lg={3} key={index}>
+            <CardHeader title={data?.cardTitle} dotsMenu={data?.dotsMenu} />
+            <Row xs={1} sm={4} className="mb-4">
+              {data?.filter.map((item, index) => (
+                <Col key={index}>
                   <LabelField
                     type={item.type}
                     label={item.label}
                     option={item.option}
                     placeholder={item.placeholder}
                     labelDir="label-col"
-                    fieldSize="w-100 h-md"
+                    fieldSize="w-100 h-sm"
                   />
                 </Col>
               ))}
-              <Col xl={12}>
-                <ProductsTable thead={data?.product.thead} tbody={products} />
-                <Pagination />
-              </Col>
             </Row>
+            <ShopsTable thead={data?.table.thead} tbody={shops} />
+            <Pagination />
           </CardLayout>
         </Col>
       </Row>

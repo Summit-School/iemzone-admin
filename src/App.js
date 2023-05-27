@@ -26,6 +26,8 @@ import {
   Login,
   UserList,
   UserProfile,
+  ShopList,
+  ShopProfile,
   MyAccount,
   ProductList,
   ProductView,
@@ -53,10 +55,12 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/user-list" element={<UserList />} />
-            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/user-profile/:id" element={<UserProfile />} />
+            <Route path="/shop-list" element={<ShopList />} />
+            <Route path="/shop-profile/:id" element={<ShopProfile />} />
             <Route path="/my-account" element={<MyAccount />} />
             <Route path="/product-list" element={<ProductList />} />
-            <Route path="/product-view" element={<ProductView />} />
+            <Route path="/product-view/:id" element={<ProductView />} />
             <Route path="/product-upload" element={<ProductUpload />} />
             <Route path="/invoice-list" element={<InvoiceList />} />
             <Route path="/invoice-details" element={<InvoiceDetails />} />
