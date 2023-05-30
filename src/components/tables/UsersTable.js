@@ -70,6 +70,28 @@ export default function UsersTable({ thead, tbody }) {
       });
   };
 
+  const blockUserHandler = () => {
+    const data = {
+      id: userData._id,
+      status: "blocked",
+    };
+    dispatch(changeUserStatus(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("success");
+          setLoading(false);
+          setBlockModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
   return (
     <Box className="mc-table-responsive">
       <Table className="mc-table">
@@ -177,7 +199,7 @@ export default function UsersTable({ thead, tbody }) {
                   <Button
                     title="Block"
                     className="material-icons block"
-                    onClick={() => setBlockModal(true)}
+                    onClick={() => setBlockModal(true, setUserData(item))}
                   >
                     {/* {item.action.block} */}
                     block
@@ -259,9 +281,9 @@ export default function UsersTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-danger"
-              onClick={() => setBlockModal(false)}
+              onClick={blockUserHandler}
             >
-              yes, block
+              {loading ? "loading..." : " yes, block"}
             </Button>
           </Modal.Footer>
         </Box>

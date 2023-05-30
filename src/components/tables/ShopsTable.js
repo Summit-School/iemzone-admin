@@ -71,6 +71,29 @@ export default function ShopsTable({ thead, tbody }) {
       });
   };
 
+  const UnverifyStoreHandler = () => {
+    setLoading(true);
+    const data = {
+      id: shopData._id,
+      verified: false,
+    };
+    dispatch(verifyShop(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("success");
+          setLoading(false);
+          setBlockModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
   return (
     <Box className="mc-table-responsive">
       lorem dolor sit am
@@ -176,7 +199,7 @@ export default function ShopsTable({ thead, tbody }) {
                     <Button
                       title="Block"
                       className="material-icons block"
-                      onClick={() => setBlockModal(true)}
+                      onClick={() => setBlockModal(true, setShopData(item))}
                     >
                       {/* {item.action.block} */}
                       block
@@ -237,7 +260,7 @@ export default function ShopsTable({ thead, tbody }) {
         <Box className="mc-alert-modal">
           <Icon type="new_releases" />
           <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to block this user's account?</Text>
+          <Text as="p">Want to Unverify this shop's account?</Text>
           <Modal.Footer>
             <Button
               type="button"
@@ -249,9 +272,9 @@ export default function ShopsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-danger"
-              onClick={() => setBlockModal(false)}
+              onClick={UnverifyStoreHandler}
             >
-              yes, block
+              {loading ? "loading..." : " yes, Unverify"}
             </Button>
           </Modal.Footer>
         </Box>
