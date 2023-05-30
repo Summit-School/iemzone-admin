@@ -37,6 +37,24 @@ export const getShop = createAsyncThunk(
   }
 );
 
+export const verifyShop = createAsyncThunk(
+  "shop/verifyShop",
+  async (data, thunkAPI) => {
+    try {
+      return await shopsServices.verifyShop(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const shopSlice = createSlice({
   name: "shops",
   initialState,

@@ -13,12 +13,20 @@ import {
   Heading,
 } from "../elements";
 import userInfo from "../../data/master/userList.json";
+// ####################################################
+import { useDispatch, useSelector } from "react-redux";
+import { changeUserStatus } from "../../redux/reducers/users";
+import { toast } from "react-toastify";
 
 export default function UsersTable({ thead, tbody }) {
   const [data, setData] = useState([]);
   const [userData, setUserData] = React.useState("");
   const [editModal, setEditModal] = React.useState(false);
   const [blockModal, setBlockModal] = React.useState(false);
+  const [userStatus, setUserStatus] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setData(tbody);
@@ -38,6 +46,28 @@ export default function UsersTable({ thead, tbody }) {
       );
       setData(checkData);
     }
+  };
+
+  const changeUserStatusHandler = () => {
+    const data = {
+      id: userData._id,
+      status: userStatus,
+    };
+    dispatch(changeUserStatus(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("success");
+          setLoading(false);
+          setEditModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   return (
@@ -114,17 +144,17 @@ export default function UsersTable({ thead, tbody }) {
               <Td title={item.email}>{item.email}</Td>
               <Td title={item.password}>{item.password}</Td>
               <Td title={item.phone}>{item.phone}</Td>
-              {/* <Td title={item.status}>
+              <Td title={item.status}>
                 {item.status === "approved" && (
                   <Text className="mc-table-badge green">{item.status}</Text>
                 )}
-                {item.status === "pending" && (
-                  <Text className="mc-table-badge purple">{item.status}</Text>
+                {item.status === "suspended" && (
+                  <Text className="mc-table-badge yellow">{item.status}</Text>
                 )}
                 {item.status === "blocked" && (
                   <Text className="mc-table-badge red">{item.status}</Text>
                 )}
-              </Td> */}
+              </Td>
               <Td title={item.created}>{item.createdAt}</Td>
               <Td>
                 <Box className="mc-table-action">
@@ -136,6 +166,14 @@ export default function UsersTable({ thead, tbody }) {
                     {/* {item.action.view} */}
                     visibility
                   </Anchor>
+                  <Button
+                    title="Edit"
+                    className="material-icons edit"
+                    onClick={() => setEditModal(true, setUserData(item))}
+                  >
+                    {/* {item.action.edit} */}
+                    edit
+                  </Button>
                   <Button
                     title="Block"
                     className="material-icons block"
@@ -156,10 +194,15 @@ export default function UsersTable({ thead, tbody }) {
         onHide={() => setEditModal(false, setUserData(""))}
       >
         <Box className="mc-user-modal">
-          <Image src={userData.src} alt={userData?.alt} />
-          <Heading as="h4">{userData?.name}</Heading>
+          <Image
+            src={`${process.env.REACT_APP_ENDPOINT}/${userData.avatar}`}
+            alt={userData?.alt}
+          />
+          <Heading as="h4">
+            {userData?.name?.firstName} {userData?.name?.lastName}
+          </Heading>
           <Text as="p">{userData?.email}</Text>
-          <Form.Group className="form-group inline mb-4">
+          {/* <Form.Group className="form-group inline mb-4">
             <Form.Label>role</Form.Label>
             <Form.Select>
               <Option>{userData?.role ? userData?.role.text : ""}</Option>
@@ -169,11 +212,11 @@ export default function UsersTable({ thead, tbody }) {
                 </Option>
               ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group className="form-group inline">
             <Form.Label>status</Form.Label>
-            <Form.Select>
-              <Option>{userData?.status}</Option>
+            <Form.Select onChange={(e) => setUserStatus(e.target.value)}>
+              {/* <Option>{userData?.status}</Option> */}
               {userInfo.status.map((item, index) => (
                 <Option key={index} value={item}>
                   {item}
@@ -192,9 +235,9 @@ export default function UsersTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-success"
-              onClick={() => setEditModal(false)}
+              onClick={changeUserStatusHandler}
             >
-              save Changes
+              {loading ? "loading..." : "save Changes"}
             </Button>
           </Modal.Footer>
         </Box>

@@ -12,9 +12,23 @@ const user = async (id) => {
   return response.data;
 };
 
+const changeUserStatus = async (data) => {
+  const response = await axios.put(
+    `${URL}/change-user-status/${data.id}`,
+    data,
+    {
+      heeader: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return response.data;
+};
+
 const authServices = {
   user,
   users,
+  changeUserStatus,
 };
 
 export default authServices;

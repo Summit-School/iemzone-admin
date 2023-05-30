@@ -48,7 +48,15 @@
     }
   ],
   "table": {
-    "thead": ["name", "email", "password", "phone", "created", "action"],
+    "thead": [
+      "name",
+      "email",
+      "password",
+      "phone",
+      "status",
+      "created",
+      "action"
+    ],
     "tbody": [
       {
         "role": { "icon": "person", "text": "member" },
@@ -119,5 +127,5 @@
     ]
   },
   "role": ["founder", "admin", "member", "client", "vendor"],
-  "status": ["approved", "pending", "blocked"]
+  "status": ["approved", "suspended", "blocked"]
 }

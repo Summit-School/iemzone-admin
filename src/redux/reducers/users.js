@@ -37,6 +37,24 @@ export const getUser = createAsyncThunk(
   }
 );
 
+export const changeUserStatus = createAsyncThunk(
+  "auth/changeUserStatus",
+  async (data, thunkAPI) => {
+    try {
+      return await usersServices.changeUserStatus(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "users",
   initialState,

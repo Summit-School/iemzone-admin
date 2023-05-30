@@ -48,7 +48,7 @@
     }
   ],
   "table": {
-    "thead": ["name", "email", "phone", "created", "action"],
+    "thead": ["name", "email", "phone", "status", "created", "action"],
     "tbody": [
       {
         "role": { "icon": "person", "text": "member" },

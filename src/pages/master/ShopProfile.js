@@ -84,6 +84,12 @@ export default function ShopProfile() {
                     <Icon>{`house`}</Icon>
                     <Text as="span">{shop?.address}</Text>
                   </Item>
+                  <Item>
+                    <Icon>{`verified`}</Icon>
+                    <Text as="span">
+                      {shop?.verified ? "Verified" : "Unverified"}
+                    </Text>
+                  </Item>
                 </List>
               </Box>
               {/* <Box className="mb-4">

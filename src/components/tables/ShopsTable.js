@@ -12,13 +12,21 @@ import {
   Option,
   Heading,
 } from "../elements";
-import userInfo from "../../data/master/userList.json";
+// import userInfo from "../../data/master/userList.json";
+import { useDispatch } from "react-redux";
+import { verifyShop } from "../../redux/reducers/shops";
+import { toast } from "react-toastify";
 
 export default function ShopsTable({ thead, tbody }) {
   const [data, setData] = useState([]);
   const [userData, setUserData] = React.useState("");
   const [editModal, setEditModal] = React.useState(false);
   const [blockModal, setBlockModal] = React.useState(false);
+  const [verStatus, setVerStatus] = React.useState(false);
+  const [shopData, setShopData] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setData(tbody);
@@ -40,8 +48,32 @@ export default function ShopsTable({ thead, tbody }) {
     }
   };
 
+  const verifyStore = () => {
+    setLoading(true);
+    const data = {
+      id: shopData._id,
+      verified: verStatus,
+    };
+    dispatch(verifyShop(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("success");
+          setLoading(false);
+          setEditModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
   return (
     <Box className="mc-table-responsive">
+      lorem dolor sit am
       <Table className="mc-table">
         <Thead className="mc-table-head primary">
           <Tr>
@@ -64,29 +96,30 @@ export default function ShopsTable({ thead, tbody }) {
           </Tr>
         </Thead>
         <Tbody className="mc-table-body even">
-          {data?.map((item, index) => (
-            <Tr key={index}>
-              <Td title="id">
-                <Box className="mc-table-check">
-                  <Input
-                    type="checkbox"
-                    name={item.name}
-                    checked={item?.isChecked || false}
-                    onChange={handleCheckbox}
-                  />
-                  <Text>#{index + 1}</Text>
-                </Box>
-              </Td>
-              <Td title={item.name}>
-                <Box className="mc-table-profile">
-                  <Image
-                    src={`${process.env.REACT_APP_ENDPOINT}/${item.profilePicture}`}
-                    alt={item.alt}
-                  />
-                  <Text>{item.name}</Text>
-                </Box>
-              </Td>
-              {/* <Td title={item?.role}>
+          {data?.map((item, index) => {
+            return (
+              <Tr key={index}>
+                <Td title="id">
+                  <Box className="mc-table-check">
+                    <Input
+                      type="checkbox"
+                      name={item.name}
+                      checked={item?.isChecked || false}
+                      onChange={handleCheckbox}
+                    />
+                    <Text>#{index + 1}</Text>
+                  </Box>
+                </Td>
+                <Td title={item.name}>
+                  <Box className="mc-table-profile">
+                    <Image
+                      src={`${process.env.REACT_APP_ENDPOINT}/${item.profilePicture}`}
+                      alt={item.alt}
+                    />
+                    <Text>{item.name}</Text>
+                  </Box>
+                </Td>
+                {/* <Td title={item?.role}>
                 <Box className="mc-table-icon role">
                   {item.role.text === "vendor" && (
                     <Icon className="material-icons yellow">
@@ -111,45 +144,50 @@ export default function ShopsTable({ thead, tbody }) {
                   <Text as="span">{item.role.text}</Text>
                 </Box>
               </Td> */}
-              <Td title={item.email}>{item.email}</Td>
-              <Td title={item.phone}>{item.phone}</Td>
-              {/* <Td title={item.status}>
-                {item.status === "approved" && (
-                  <Text className="mc-table-badge green">{item.status}</Text>
-                )}
-                {item.status === "pending" && (
-                  <Text className="mc-table-badge purple">{item.status}</Text>
-                )}
-                {item.status === "blocked" && (
-                  <Text className="mc-table-badge red">{item.status}</Text>
-                )}
-              </Td> */}
-              <Td title={item.created}>{item.createdAt}</Td>
-              <Td>
-                <Box className="mc-table-action">
-                  <Anchor
-                    href={`/shop-profile/${item._id}`}
-                    title="View"
-                    className="material-icons view"
-                  >
-                    {/* {item.action.view} */}
-                    visibility
-                  </Anchor>
-                  <Button
-                    title="Block"
-                    className="material-icons block"
-                    onClick={() => setBlockModal(true)}
-                  >
-                    {/* {item.action.block} */}
-                    block
-                  </Button>
-                </Box>
-              </Td>
-            </Tr>
-          ))}
+                <Td title={item.email}>{item.email}</Td>
+                <Td title={item.phone}>{item.phone}</Td>
+                <Td title={item.status}>
+                  {item.verified === true && (
+                    <Text className="mc-table-badge green">{"Verified"}</Text>
+                  )}
+                  {item.verified === false && (
+                    <Text className="mc-table-badge red">{"Unverified"}</Text>
+                  )}
+                </Td>
+                <Td title={item.created}>{item.createdAt}</Td>
+                <Td>
+                  <Box className="mc-table-action">
+                    <Anchor
+                      href={`/shop-profile/${item._id}`}
+                      title="View"
+                      className="material-icons view"
+                    >
+                      {/* {item.action.view} */}
+                      visibility
+                    </Anchor>
+                    <Button
+                      title="Edit"
+                      className="material-icons edit"
+                      onClick={() => setEditModal(true, setShopData(item))}
+                    >
+                      {/* {item.action.edit} */}
+                      edit
+                    </Button>
+                    <Button
+                      title="Block"
+                      className="material-icons block"
+                      onClick={() => setBlockModal(true)}
+                    >
+                      {/* {item.action.block} */}
+                      block
+                    </Button>
+                  </Box>
+                </Td>
+              </Tr>
+            );
+          })}
         </Tbody>
       </Table>
-
       <Modal
         show={editModal}
         onHide={() => setEditModal(false, setUserData(""))}
@@ -158,7 +196,7 @@ export default function ShopsTable({ thead, tbody }) {
           <Image src={userData.src} alt={userData?.alt} />
           <Heading as="h4">{userData?.name}</Heading>
           <Text as="p">{userData?.email}</Text>
-          <Form.Group className="form-group inline mb-4">
+          {/* <Form.Group className="form-group inline mb-4">
             <Form.Label>role</Form.Label>
             <Form.Select>
               <Option>{userData?.role ? userData?.role.text : ""}</Option>
@@ -168,16 +206,13 @@ export default function ShopsTable({ thead, tbody }) {
                 </Option>
               ))}
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
           <Form.Group className="form-group inline">
             <Form.Label>status</Form.Label>
-            <Form.Select>
-              <Option>{userData?.status}</Option>
-              {userInfo.status.map((item, index) => (
-                <Option key={index} value={item}>
-                  {item}
-                </Option>
-              ))}
+            <Form.Select onChange={(e) => setVerStatus(e.target.value)}>
+              <Option>Select status</Option>
+              <Option value={true}>Verify</Option>
+              <Option value={false}>Unverify</Option>
             </Form.Select>
           </Form.Group>
           <Modal.Footer>
@@ -191,14 +226,13 @@ export default function ShopsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-success"
-              onClick={() => setEditModal(false)}
+              onClick={verifyStore}
             >
-              save Changes
+              {loading ? "loading..." : "save Changes"}
             </Button>
           </Modal.Footer>
         </Box>
       </Modal>
-
       <Modal show={blockModal} onHide={() => setBlockModal(false)}>
         <Box className="mc-alert-modal">
           <Icon type="new_releases" />

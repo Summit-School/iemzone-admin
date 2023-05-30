@@ -77,7 +77,7 @@ export default function UserProfile() {
                     <Text as="span">{user?.email}</Text>
                   </Item>
                   <Item>
-                    <Icon>{`lock`}</Icon>
+                    <Icon>{`verified`}</Icon>
                     <Text as="span">{user?.status}</Text>
                   </Item>
                 </List>
