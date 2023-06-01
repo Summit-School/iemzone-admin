@@ -65,7 +65,7 @@ export default function App() {
             <Route path="/product-view/:id" element={<ProductView />} />
             <Route path="/product-upload" element={<ProductUpload />} />
             <Route path="/invoice-list" element={<InvoiceList />} />
-            <Route path="/invoice-details" element={<InvoiceDetails />} />
+            <Route path="/invoice-details/:id" element={<InvoiceDetails />} />
             <Route path="/order-list" element={<OrderList />} />
             <Route path="/message" element={<Message />} />
             <Route path="/notification" element={<Notification />} />
