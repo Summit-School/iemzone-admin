@@ -15,7 +15,6 @@ import {
 export default function ProductsTable({ thead, tbody }) {
   const [alertModal, setAlertModal] = useState(false);
   const [data, setData] = useState([]);
-  console.log(data);
 
   useEffect(() => {
     setData(tbody);

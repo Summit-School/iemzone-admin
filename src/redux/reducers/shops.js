@@ -68,6 +68,9 @@ export const shopSlice = createSlice({
       })
       .addCase(getShop.fulfilled, (state, action) => {
         state.shop = action.payload;
+      })
+      .addCase(verifyShop.fulfilled, (state, action) => {
+        state.shops = action.payload;
       });
   },
 });

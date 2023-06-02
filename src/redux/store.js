@@ -4,6 +4,7 @@ import users from "./reducers/users";
 import shops from "./reducers/shops";
 import orders from "./reducers/orders";
 import products from "./reducers/products";
+import categories from "./reducers/categories";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     shops,
     orders,
     products,
+    categories,
   },
 });

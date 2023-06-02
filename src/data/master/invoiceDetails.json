@@ -21,11 +21,11 @@
   },
   "title": "invoice #985466",
   "recieved": {
-    "title": "order recieved",
+    "title": "shipment details",
     "text": "Office 25/B, Road 30, West jalkuri, Fatullah, Narayanganj 1265. +8801838288389, support@miron.com"
   },
   "shipment": {
-    "title": "shipment details",
+    "title": "billing details",
     "text": "House 17/A, Road 09, West jalkuri, Fatullah, Narayanganj 1265. +8801838288389, support@miron.com"
   },
   "table": {

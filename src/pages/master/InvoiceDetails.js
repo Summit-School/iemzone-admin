@@ -30,13 +30,12 @@ export default function InvoiceDetails() {
   const dispatch = useDispatch();
   const orderDetails = useSelector((state) => state.orders.order);
   const order = orderDetails?.order;
-  console.log(order);
   let totalPrice = 0;
-  order.items.map((item) => {
-    totalPrice = totalPrice + item.price;
-    return totalPrice;
-  });
-  console.log(totalPrice);
+  order &&
+    order.items.map((item) => {
+      totalPrice = totalPrice + item.price;
+      return totalPrice;
+    });
 
   useEffect(() => {
     dispatch(getOrderById(id));
@@ -66,16 +65,30 @@ export default function InvoiceDetails() {
           <CardLayout className="p-md-5">
             <Box className="mc-invoice-head">
               <Image src={data?.logo.src} alt={data?.logo.alt} />
-              <Heading as="h2">{data?.title}</Heading>
+              <Heading as="h2">invoice #{order?._id}</Heading>
             </Box>
             <Box className="mc-invoice-group">
               <Box className="mc-invoice-recieved">
                 <Heading as="h6">{data?.recieved.title}</Heading>
-                <Text>{data?.recieved.text}</Text>
+                {<Text>Name: {order?.shippingData.shipping_name}</Text>}
+                {<Text>Email: {order?.shippingData.shipping_email}</Text>}
+                {<Text>Phone: {order?.shippingData.shipping_contact}</Text>}
+                {<Text>Company: {order?.shippingData.shipping_company}</Text>}
+                {<Text>City: {order?.shippingData.shipping_city.label}</Text>}
+                {<Text>Address1: {order?.shippingData.shipping_address1}</Text>}
+                {<Text>Address2: {order?.shippingData.shipping_address2}</Text>}
+                {<Text>Zip Code: {order?.shippingData.shipping_zip}</Text>}
               </Box>
               <Box className="mc-invoice-shipment">
                 <Heading as="h6">{data?.shipment.title}</Heading>
-                <Text>{data?.shipment.text}</Text>
+                {<Text>{order?.shippingData.shipping_name} :Name</Text>}
+                {<Text> {order?.shippingData.shipping_email} :Email</Text>}
+                {<Text>{order?.shippingData.shipping_contact} :Phone</Text>}
+                {<Text>{order?.shippingData.shipping_company} :Company</Text>}
+                {<Text>{order?.shippingData.shipping_city.label} :City</Text>}
+                {<Text>{order?.shippingData.shipping_address1} :Address1</Text>}
+                {<Text>{order?.shippingData.shipping_address2} :Address2</Text>}
+                {<Text>{order?.shippingData.shipping_zip} :Zip Code</Text>}
               </Box>
             </Box>
             <Box className="mc-table-responsive">
@@ -134,7 +147,7 @@ export default function InvoiceDetails() {
                     :
                   </Text>
                   <Text as="span" className={`digit`}>
-                    $0
+                    ${order && order.discount}
                   </Text>
                 </Item>
                 <Item>
@@ -145,7 +158,7 @@ export default function InvoiceDetails() {
                     :
                   </Text>
                   <Text as="span" className={`digit`}>
-                    $1000
+                    ${order && order.shippingCost}
                   </Text>
                 </Item>
                 <Item>
@@ -156,12 +169,18 @@ export default function InvoiceDetails() {
                     :
                   </Text>
                   <Text as="span" className={`digit`}>
-                    ${totalPrice + 1000}
+                    ${totalPrice + order?.shippingCost}
                   </Text>
                 </Item>
               </List>
             </Box>
-            <Text className="mc-invoice-note">{data?.note}</Text>
+            <Text className="mc-invoice-note">
+              Thank you for shopping at iemzone. We offer a 7-day return policy
+              on all products. If you have any complain about this order, please
+              call or email us. (VAT has been calculated as per GO
+              02/Mushak/2019). This is a sytem generated invoice and no
+              signature or seal is required.
+            </Text>
             <Box className="mc-invoice-btns">
               {data?.button.map((item, index) => (
                 <Anchor

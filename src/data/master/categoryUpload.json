@@ -1,13 +1,13 @@
 {
-  "pageTitle": "product upload",
+  "pageTitle": "category upload",
   "breadcrumb": [
     { "path": "/", "text": "home" },
-    { "text": "product" },
+    { "text": "category" },
     { "text": "upload" }
   ],
-  "title": "add new product",
+  "title": "add new category",
   "button": { "path": "#", "icon": "visibility", "text": "show all products" },
-  "dotsMenu": {
+  "_dotsMenu": {
     "dots": "more_horiz",
     "dropdown": [
       { "icon": "edit", "text": "edit" },

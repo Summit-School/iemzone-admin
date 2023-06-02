@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-bootstrap/Modal";
+import { Modal, Form } from "react-bootstrap";
 import { Table, Thead, Tbody, Th, Tr, Td } from "../elements/Table";
 import {
   Image,
@@ -10,12 +10,21 @@ import {
   Button,
   Heading,
   Anchor,
+  Option,
 } from "../elements";
+import { useDispatch } from "react-redux";
+import { updateOrderStatus } from "../../redux/reducers/orders";
+import { toast } from "react-toastify";
 
 export default function OrderTable({ thead, tbody, usersData }) {
-  const [alertModal, setAlertModal] = React.useState(false);
+  const [editModal, setEditModal] = React.useState(false);
+  const [orderData, setOrderData] = React.useState(null);
+  const [userData, setUserData] = React.useState(null);
+  const [orderStatus, setOrderStatus] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
   const [data, setData] = useState([]);
   const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setData(tbody);
@@ -36,6 +45,29 @@ export default function OrderTable({ thead, tbody, usersData }) {
       );
       setData(checkData);
     }
+  };
+
+  const updateOrderStatusHandler = () => {
+    setLoading(true);
+    const data = {
+      id: orderData._id,
+      status: orderStatus,
+    };
+    dispatch(updateOrderStatus(data))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("success");
+          setLoading(false);
+          setEditModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   };
 
   return (
@@ -130,18 +162,17 @@ export default function OrderTable({ thead, tbody, usersData }) {
                       href="#"
                       className="material-icons download"
                       download
+                      onClick={() =>
+                        setEditModal(
+                          true,
+                          setOrderData(item),
+                          setUserData(user)
+                        )
+                      }
                     >
                       {/* {item.action.download} */}
-                      download
+                      edit
                     </Anchor>
-                    <Button
-                      title="Delete"
-                      className="material-icons delete"
-                      onClick={() => setAlertModal(true)}
-                    >
-                      {/* {item.action.delete} */}
-                      delete
-                    </Button>
                   </Box>
                 </Td>
               </Tr>
@@ -149,25 +180,44 @@ export default function OrderTable({ thead, tbody, usersData }) {
           })}
         </Tbody>
       </Table>
-      <Modal show={alertModal} onHide={() => setAlertModal(false)}>
-        <Box className="mc-alert-modal">
-          <Icon type="new_releases" />
-          <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to delete this order?</Text>
+      <Modal
+        show={editModal}
+        onHide={() => setEditModal(false, setOrderData(""))}
+      >
+        <Box className="mc-user-modal">
+          <Image
+            src={
+              userData &&
+              `${process.env.REACT_APP_ENDPOINT}/${userData[0].avatar}`
+            }
+            alt={userData?.alt}
+          />
+          <Heading as="h4">{userData && userData[0]?.name.firstName}</Heading>
+          <Text as="p">{userData && userData[0]?.email}</Text>
+          <Form.Group className="form-group inline">
+            <Form.Label>status</Form.Label>
+            <Form.Select onChange={(e) => setOrderStatus(e.target.value)}>
+              <Option>{orderData?.status}</Option>
+              <Option value="Pending">Pending</Option>
+              <Option value="Processing">Processing</Option>
+              <Option value="Delivered">Delivered</Option>
+              <Option value="Cancelled">Cancelled</Option>
+            </Form.Select>
+          </Form.Group>
           <Modal.Footer>
             <Button
               type="button"
               className="btn btn-secondary"
-              onClick={() => setAlertModal(false)}
+              onClick={() => setEditModal(false)}
             >
-              nop, close
+              close popup
             </Button>
             <Button
               type="button"
-              className="btn btn-danger"
-              onClick={() => setAlertModal(false)}
+              className="btn btn-success"
+              onClick={updateOrderStatusHandler}
             >
-              yes, delete
+              {loading ? "loading..." : "save Changes"}
             </Button>
           </Modal.Footer>
         </Box>

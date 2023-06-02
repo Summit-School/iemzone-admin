@@ -26,7 +26,6 @@ export default function ProductView() {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.products.product);
   const product = productDetails?.product;
-  console.log(product);
 
   useEffect(() => {
     dispatch(getProduct(id));

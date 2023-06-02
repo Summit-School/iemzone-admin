@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import ordersServices from "../services/orders";
+import categoriesServices from "../services/categories";
 
 const initialState = {
-  orders: [],
-  order: null,
+  categories: [],
+  category: null,
 };
 
-export const getOrders = createAsyncThunk(
-  "order/getOrders",
+export const getCategories = createAsyncThunk(
+  "category/getCategories",
   async (thunkAPI) => {
     try {
-      return await ordersServices.orders();
+      return await categoriesServices.categories();
     } catch (error) {
       const message =
         (error.response &&
@@ -24,29 +24,11 @@ export const getOrders = createAsyncThunk(
   }
 );
 
-export const getOrderById = createAsyncThunk(
-  "order/getOrderById",
-  async (id, thunkAPI) => {
-    try {
-      return await ordersServices.order(id);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-export const updateOrderStatus = createAsyncThunk(
-  "order/updateOrderStatus",
+export const createCategory = createAsyncThunk(
+  "category/createCategory",
   async (data, thunkAPI) => {
     try {
-      return await ordersServices.updateOrderStatus(data);
+      return await categoriesServices.createCategory(data);
     } catch (error) {
       const message =
         (error.response &&
@@ -60,27 +42,45 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
-export const orderSlice = createSlice({
-  name: "orders",
+export const deleteCategory = createAsyncThunk(
+  "category/deleteCategory",
+  async (id, thunkAPI) => {
+    try {
+      return await categoriesServices.deleteCategory(id);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const categorySlice = createSlice({
+  name: "categories",
   initialState,
   reducers: {
     reset: (state) => {},
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOrders.fulfilled, (state, action) => {
-        state.orders = action.payload;
+      .addCase(getCategories.fulfilled, (state, action) => {
+        state.categories = action.payload;
       })
-      .addCase(getOrderById.fulfilled, (state, action) => {
-        state.order = action.payload;
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.categories = action.payload;
       })
-      .addCase(updateOrderStatus.fulfilled, (state, action) => {
-        state.orders = action.payload;
+      .addCase(createCategory.fulfilled, (state, action) => {
+        state.category = action.payload;
       });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { reset } = orderSlice.actions;
+export const { reset } = categorySlice.actions;
 
-export default orderSlice.reducer;
+export default categorySlice.reducer;

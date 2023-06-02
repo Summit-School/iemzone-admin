@@ -13,16 +13,13 @@ const user = async (id) => {
 };
 
 const changeUserStatus = async (data) => {
-  const response = await axios.put(
-    `${URL}/change-user-status/${data.id}`,
-    data,
-    {
-      heeader: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  return response.data;
+  await axios.put(`${URL}/change-user-status/${data.id}`, data, {
+    heeader: {
+      "Content-Type": "application/json",
+    },
+  });
+  const response = await users();
+  return response;
 };
 
 const authServices = {

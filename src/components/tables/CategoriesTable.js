@@ -2,19 +2,25 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Table, Thead, Tbody, Th, Tr, Td } from "../elements/Table";
 import {
-  Heading,
   Anchor,
-  Icon,
+  Heading,
   Box,
   Text,
   Input,
   Image,
+  Icon,
   Button,
 } from "../elements";
+import { useDispatch } from "react-redux";
+import { deleteCategory } from "../../redux/reducers/categories";
+import { toast } from "react-toastify";
 
-export default function DealsTable({ thead, tbody }) {
+export default function CategoriesTable({ thead, tbody }) {
   const [alertModal, setAlertModal] = useState(false);
+  const [catData, setCatData] = useState(null);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setData(tbody);
@@ -36,9 +42,28 @@ export default function DealsTable({ thead, tbody }) {
     }
   };
 
+  const deleteCategoryHandler = () => {
+    setLoading(true);
+    dispatch(deleteCategory(catData._id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success(res.payload.message);
+          setLoading(false);
+          setAlertModal(false);
+        } else {
+          toast.error("An error occurred");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
   return (
     <Box className="mc-table-responsive">
-      <Table className="mc-table">
+      <Table className="mc-table product">
         <Thead className="mc-table-head primary">
           <Tr>
             <Th>
@@ -51,7 +76,7 @@ export default function DealsTable({ thead, tbody }) {
                   }
                   onChange={handleCheckbox}
                 />
-                <Text>s.l</Text>
+                <Text>uid</Text>
               </Box>
             </Th>
             {thead.map((item, index) => (
@@ -62,54 +87,39 @@ export default function DealsTable({ thead, tbody }) {
         <Tbody className="mc-table-body even">
           {data?.map((item, index) => (
             <Tr key={index}>
-              <Td>
+              <Td title={index + 1}>
                 <Box className="mc-table-check">
                   <Input
                     type="checkbox"
-                    name={item.name}
+                    name={item.title}
                     checked={item?.isChecked || false}
                     onChange={handleCheckbox}
                   />
-                  <Text>{index + 1}</Text>
+                  <Text>#{index + 1}</Text>
                 </Box>
               </Td>
               <Td>
-                <Box className="mc-table-profile">
-                  <Image src={item.src} alt={item.alt} />
-                  <Text>{item.name}</Text>
+                <Box className="mc-table-product md">
+                  <Image
+                    src={`${process.env.REACT_APP_ENDPOINT}/${item.image}`}
+                    alt={item.alt}
+                  />
+                  <Box className="mc-table-group">
+                    <Heading as="h6">{item.name}</Heading>
+                    <Text>{item.slug}</Text>
+                  </Box>
                 </Box>
               </Td>
-              <Td>{item.email}</Td>
-              <Td>{item.amount}</Td>
-              <Td>
-                <Text className={`mc-table-badge ${item.status.variant}`}>
-                  {item.status.text}
-                </Text>
-              </Td>
-              <Td>{item.date}</Td>
+              <Td>{item.createdAt}</Td>
               <Td>
                 <Box className="mc-table-action">
-                  <Anchor
-                    title="View"
-                    href="/user-profile"
-                    className="material-icons view"
-                  >
-                    {item.action.view}
-                  </Anchor>
-                  <Anchor
-                    title="Download"
-                    href="#"
-                    className="material-icons download"
-                    download
-                  >
-                    {item.action.download}
-                  </Anchor>
                   <Button
                     title="Delete"
                     className="material-icons delete"
-                    onClick={() => setAlertModal(true)}
+                    onClick={() => setAlertModal(true, setCatData(item))}
                   >
-                    {item.action.delete}
+                    {/* {item.action.delete} */}
+                    delete
                   </Button>
                 </Box>
               </Td>
@@ -117,11 +127,14 @@ export default function DealsTable({ thead, tbody }) {
           ))}
         </Tbody>
       </Table>
+
       <Modal show={alertModal} onHide={() => setAlertModal(false)}>
         <Box className="mc-alert-modal">
           <Icon type="new_releases" />
           <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to delete this deals?</Text>
+          <Text as="p">
+            Want to delete this {catData && catData.name} category?
+          </Text>
           <Modal.Footer>
             <Button
               type="button"
@@ -133,9 +146,9 @@ export default function DealsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-danger"
-              onClick={() => setAlertModal(false)}
+              onClick={deleteCategoryHandler}
             >
-              yes, delete
+              {loading ? "Loading..." : "yes, delete"}
             </Button>
           </Modal.Footer>
         </Box>

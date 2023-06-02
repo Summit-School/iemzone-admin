@@ -39,6 +39,8 @@ import {
   Notification,
   BlankPage,
   Settings,
+  CategoryList,
+  CategoryUpload,
 } from "./pages/master";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -64,6 +66,10 @@ export default function App() {
             <Route path="/product-list" element={<ProductList />} />
             <Route path="/product-view/:id" element={<ProductView />} />
             <Route path="/product-upload" element={<ProductUpload />} />
+
+            <Route path="/category-list" element={<CategoryList />} />
+            <Route path="/category-upload" element={<CategoryUpload />} />
+
             <Route path="/invoice-list" element={<InvoiceList />} />
             <Route path="/invoice-details/:id" element={<InvoiceDetails />} />
             <Route path="/order-list" element={<OrderList />} />

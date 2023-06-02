@@ -13,13 +13,13 @@ const shop = async (id) => {
 };
 
 const verifyShop = async (data) => {
-  const response = await axios.put(`${URL}/change-status/${data.id}`, data, {
+  await axios.put(`${URL}/change-status/${data.id}`, data, {
     headers: {
       "Content-Type": "application/json",
     },
   });
-  await axios.get(`${URL}/shops`);
-  return response.data;
+  const response = await shops();
+  return response;
 };
 
 const shopServices = {

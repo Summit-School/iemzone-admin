@@ -19,3 +19,5 @@ export { default as UserList } from "./UserList";
 export { default as UserProfile } from "./UserProfile";
 export { default as ShopList } from "./ShopList";
 export { default as ShopProfile } from "./ShopProfile";
+export { default as CategoryList } from "./CategoryList";
+export { default as CategoryUpload } from "./CategoryUpload";

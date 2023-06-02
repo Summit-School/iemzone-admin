@@ -46,6 +46,15 @@
             { "href": "/product-upload", "text": "product upload" }
           ]
         },
+        {
+          "icon": "category",
+          "text": "categories",
+          "_badge": { "text": "new", "variant": "purple square" },
+          "submenu": [
+            { "href": "/category-list", "text": "category list" },
+            { "href": "/category-upload", "text": "category upload" }
+          ]
+        },
 
         {
           "href": "/order-list",

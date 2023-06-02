@@ -12,9 +12,20 @@ const order = async (id) => {
   return response.data;
 };
 
+const updateOrderStatus = async (data) => {
+  await axios.put(`${URL}/update-order-status/${data.id}`, data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const response = await orders();
+  return response;
+};
+
 const orderServices = {
   order,
   orders,
+  updateOrderStatus,
 };
 
 export default orderServices;
