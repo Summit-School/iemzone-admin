@@ -36,6 +36,7 @@ export default function Login() {
       dispatch(login(data), setLoading(true))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
+            localStorage.setItem("iemzone-admin", res.payload.token);
             navigate("/ecommerce");
             setLoading(false);
           } else {

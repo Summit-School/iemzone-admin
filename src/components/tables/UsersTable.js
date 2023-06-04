@@ -131,10 +131,7 @@ export default function UsersTable({ thead, tbody }) {
               </Td>
               <Td title={item.name}>
                 <Box className="mc-table-profile">
-                  <Image
-                    src={`${process.env.REACT_APP_ENDPOINT}/${item.avatar}`}
-                    alt={item.alt}
-                  />
+                  <Image src={`${item.avatar}`} alt={item.alt} />
                   <Text>{item.name.firstName}</Text>
                 </Box>
               </Td>
@@ -216,10 +213,7 @@ export default function UsersTable({ thead, tbody }) {
         onHide={() => setEditModal(false, setUserData(""))}
       >
         <Box className="mc-user-modal">
-          <Image
-            src={`${process.env.REACT_APP_ENDPOINT}/${userData.avatar}`}
-            alt={userData?.alt}
-          />
+          <Image src={`${userData.avatar}`} alt={userData?.alt} />
           <Heading as="h4">
             {userData?.name?.firstName} {userData?.name?.lastName}
           </Heading>

@@ -100,10 +100,7 @@ export default function CategoriesTable({ thead, tbody }) {
               </Td>
               <Td>
                 <Box className="mc-table-product md">
-                  <Image
-                    src={`${process.env.REACT_APP_ENDPOINT}/${item.image}`}
-                    alt={item.alt}
-                  />
+                  <Image src={`${item.image}`} alt={item.alt} />
                   <Box className="mc-table-group">
                     <Heading as="h6">{item.name}</Heading>
                     <Text>{item.slug}</Text>

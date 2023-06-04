@@ -19,23 +19,27 @@ import data from "../../data/master/categoryUpload.json";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { createCategory } from "../../redux/reducers/categories";
+import userId from "../../userId";
 
 export default function CategoryUpload() {
-  const [uploadFile, setUploadFile] = React.useState("");
+  const [files, setFiles] = React.useState([]);
   const [categoryName, setCategoryName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const dispatch = useDispatch();
+  const id = userId();
 
   const uploadCategoryHandler = () => {
-    if (uploadFile === "" || categoryName === "") {
+    if (files === "" || categoryName === "") {
       return toast.error("All fields are required");
     } else {
       const catSlug = categoryName.replace(/\W+/g, "-").toLowerCase();
       const form = new FormData();
       form.append("name", categoryName);
       form.append("slug", catSlug);
-      // for (let i = 0; i < uploadFile.length; i++) {
-      //   form.append("image", uploadFile[i]);
+      form.append("userId", id);
+      form.append("image", files[0]);
+      // for (let i = 0; i < files[0].length; i++) {
+      //   form.append("image", files[i]);
       // }
       dispatch(createCategory(form), setLoading(true))
         .then((res) => {
@@ -232,17 +236,17 @@ export default function CategoryUpload() {
                 <Input
                   type="file"
                   id="product"
-                  onChange={(e) => setUploadFile(e.target.files[0].name)}
+                  onChange={(e) => setFiles(e.target.files)}
                 />
                 <Label htmlFor="product">
                   <Icon type="collections" />
-                  <Text>{uploadFile}</Text>
+                  <Text>{files[0]?.name}</Text>
                 </Label>
               </Box>
             </Box>
             <Anchor
               className="mc-btn w-100 primary mt-5"
-              text="publish &amp; view"
+              text={loading ? "Loading..." : "publish"}
               icon="cloud_upload"
               // href="#"
               onClick={uploadCategoryHandler}

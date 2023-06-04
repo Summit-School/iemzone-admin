@@ -135,10 +135,7 @@ export default function ShopsTable({ thead, tbody }) {
                 </Td>
                 <Td title={item.name}>
                   <Box className="mc-table-profile">
-                    <Image
-                      src={`${process.env.REACT_APP_ENDPOINT}/${item.profilePicture}`}
-                      alt={item.alt}
-                    />
+                    <Image src={`${item.profilePicture}`} alt={item.alt} />
                     <Text>{item.name}</Text>
                   </Box>
                 </Td>
