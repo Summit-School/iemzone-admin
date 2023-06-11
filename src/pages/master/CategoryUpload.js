@@ -3,8 +3,6 @@ import { Row, Col } from "react-bootstrap";
 import {
   Box,
   Anchor,
-  Button,
-  Image,
   Input,
   Label,
   Icon,
@@ -29,34 +27,56 @@ export default function CategoryUpload() {
   const id = userId();
 
   const uploadCategoryHandler = () => {
-    if (files === "" || categoryName === "") {
-      return toast.error("All fields are required");
-    } else {
-      const catSlug = categoryName.replace(/\W+/g, "-").toLowerCase();
-      const form = new FormData();
-      form.append("name", categoryName);
-      form.append("slug", catSlug);
-      form.append("userId", id);
-      form.append("image", files[0]);
-      // for (let i = 0; i < files[0].length; i++) {
-      //   form.append("image", files[i]);
-      // }
-      dispatch(createCategory(form), setLoading(true))
-        .then((res) => {
-          if (res.meta.requestStatus === "fulfilled") {
-            toast.success(res.payload.message);
-            setLoading(false);
-          }
-          if (res.meta.requestStatus === "rejected") {
-            setLoading(false);
-            toast.error(res.payload);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
+    setLoading(true);
+    const catSlug = categoryName.replace(/\W+/g, "-").toLowerCase();
+    const data = {
+      name: categoryName,
+      slug: catSlug,
+      userId: id,
+    };
+    dispatch(createCategory(data), setLoading(true))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success(res.payload.message);
           setLoading(false);
-        });
-    }
+        }
+        if (res.meta.requestStatus === "rejected") {
+          setLoading(false);
+          toast.error(res.payload);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+    // if (files === "" || categoryName === "") {
+    //   return toast.error("All fields are required");
+    // } else {
+    //   const catSlug = categoryName.replace(/\W+/g, "-").toLowerCase();
+    //   const form = new FormData();
+    //   form.append("name", categoryName);
+    //   form.append("slug", catSlug);
+    //   form.append("userId", id);
+    //   form.append("image", files[0]);
+    //   // for (let i = 0; i < files[0].length; i++) {
+    //   //   form.append("image", files[i]);
+    //   // }
+    //   dispatch(createCategory(form), setLoading(true))
+    //     .then((res) => {
+    //       if (res.meta.requestStatus === "fulfilled") {
+    //         toast.success(res.payload.message);
+    //         setLoading(false);
+    //       }
+    //       if (res.meta.requestStatus === "rejected") {
+    //         setLoading(false);
+    //         toast.error(res.payload);
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //       setLoading(false);
+    //     });
+    // }
   };
 
   return (

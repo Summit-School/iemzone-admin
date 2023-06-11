@@ -11,7 +11,7 @@ const createCategory = async (data) => {
   const response = await axios.post(`${URL}/create-category`, data, {
     headers: {
       Accept: "application/json",
-      "Content-Type": "multipart/form-data",
+      // "Content-Type": "multipart/form-data",
     },
   });
   return response.data;
