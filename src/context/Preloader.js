@@ -18,7 +18,7 @@ export const LoaderProvider = ({ children }) => {
     <LoaderContext.Provider value={{ loading }}>
       {loading ? (
         <Box className="mc-spinner">
-          <Image src="images/logo.webp" aly="logo" />
+          <Image src="images/logo/temzone-black.png" aly="logo" />
           <Box className="mc-spinner-group">
             <Heading>Loading</Heading>
             <PulseLoader color="#0857f5" loading={loading} size={8} />

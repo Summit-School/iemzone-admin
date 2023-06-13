@@ -1,9 +1,9 @@
 {
   "logo": {
     "path": "/ecommerce",
-    "src": "images/logo.webp",
-    "alt": "blue",
-    "name": "iemzone"
+    "src": "images/logo/temzone-black.png",
+    "alt": "iemzone",
+    "_name": "iemzone"
   },
   "toggle": {
     "open": "menu_open",

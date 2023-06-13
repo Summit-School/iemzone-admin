@@ -15,6 +15,7 @@ import { IconAlert } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/reducers/auth";
+import PulseLoader from "react-spinners/PulseLoader";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -90,7 +91,11 @@ export default function Login() {
             type={data?.button.type}
             onClick={handleLogin}
           >
-            {loading ? "Loading..." : data?.button.text}
+            {loading ? (
+              <PulseLoader color="#fff" size={8} />
+            ) : (
+              data?.button.text
+            )}
           </Button>
           <Anchor className="mc-auth-forgot" href={data?.forgot.path}>
             {data?.forgot.text}

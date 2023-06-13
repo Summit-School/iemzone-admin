@@ -54,11 +54,7 @@ export default function ProductView() {
             <DivideTitle title="product gallery" className="mb-4" />
             <Box className="mc-product-view-gallery">
               {product?.images.map((item, index) => (
-                <Image
-                  key={index}
-                  src={`${process.env.REACT_APP_ENDPOINT}/${item}`}
-                  alt={item.alt}
-                />
+                <Image key={index} src={`${item.image}`} alt={item.alt} />
               ))}
             </Box>
           </Col>

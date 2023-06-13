@@ -75,7 +75,7 @@ export default function ProductsTable({ thead, tbody }) {
               </Td>
               <Td>
                 <Box className="mc-table-product md">
-                  <Image src={`${item.thumbnail}`} alt={item.alt} />
+                  <Image src={`${item.thumbnail.image}`} alt={item.alt} />
                   <Box className="mc-table-group">
                     <Heading as="h6">{item.title}</Heading>
                     <Text>{item.description}</Text>
