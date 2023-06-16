@@ -15,13 +15,18 @@ import {
 } from "../../components/cards";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../redux/reducers/products";
+import { getShippingFee } from "../../redux/reducers/shipping";
+import formatMoney from "../../formatMoney";
 
 export default function Ecommerce() {
   const dispatch = useDispatch();
   const productsList = useSelector((state) => state.products.products);
-  const products = productsList?.products;
+  // const products = productsList?.products;
+  const shippingFee = useSelector((state) => state.shipping.shippingFee);
+  const fee = shippingFee && shippingFee[0]?.shippingFee;
 
   useEffect(() => {
+    dispatch(getShippingFee());
     dispatch(getProducts());
   }, []);
 
@@ -61,6 +66,17 @@ export default function Ecommerce() {
                 />
               </Col>
             ))}
+            <Col>
+              <EcommerceCard
+                icon={"local_shipping"}
+                trend={"trending_up"}
+                title={"Shipping Fee"}
+                number={formatMoney(fee)}
+                variant={"purple"}
+                percent={"+84%"}
+                compare={"last month"}
+              />
+            </Col>
           </Row>
         </Col>
         <Col xs={12} xl={4}>

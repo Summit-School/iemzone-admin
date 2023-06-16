@@ -41,6 +41,7 @@ import {
   Settings,
   CategoryList,
   CategoryUpload,
+  UpdateShippingFee,
 } from "./pages/master";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,7 +53,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             {/* master Pages */}
-            <Route path="/ecommerce" element={<Ecommerce />} />
+            <Route path="/dashboard" element={<Ecommerce />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/crm" element={<CRM />} />
             <Route path="/login" element={<Login />} />
@@ -69,6 +70,11 @@ export default function App() {
 
             <Route path="/category-list" element={<CategoryList />} />
             <Route path="/category-upload" element={<CategoryUpload />} />
+
+            <Route
+              path="/update-shipping-fee"
+              element={<UpdateShippingFee />}
+            />
 
             <Route path="/invoice-list" element={<InvoiceList />} />
             <Route path="/invoice-details/:id" element={<InvoiceDetails />} />

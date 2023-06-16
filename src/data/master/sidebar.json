@@ -6,7 +6,7 @@
         {
           "icon": "dashboard",
           "text": "dashboard",
-          "href": "/ecommerce",
+          "href": "/dashboard",
           "_submenu": [
             { "href": "/ecommerce", "text": "ecommerce" },
             { "href": "/analytics", "text": "analytics" },
@@ -61,6 +61,14 @@
           "icon": "shopping_cart",
           "text": "orders",
           "_badge": { "text": "05", "variant": "primary round" }
+        },
+        {
+          "icon": "local_shipping",
+          "text": "Shipping Info",
+          "_badge": { "text": "new", "variant": "purple square" },
+          "submenu": [
+            { "href": "/update-shipping-fee", "text": "Update shipping fee" }
+          ]
         },
         {
           "icon": "article",

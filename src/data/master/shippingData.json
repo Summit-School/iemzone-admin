@@ -1,0 +1,18 @@
+{
+  "pageTitle": "Update Shipping Fee",
+  "breadcrumb": [
+    { "path": "/", "text": "home" },
+    { "text": "category" },
+    { "text": "upload" }
+  ],
+  "title": "add new category",
+  "button": { "path": "#", "icon": "visibility", "text": "show all products" },
+  "_dotsMenu": {
+    "dots": "more_horiz",
+    "dropdown": [
+      { "icon": "edit", "text": "edit" },
+      { "icon": "delete", "text": "delete" },
+      { "icon": "download", "text": "download" }
+    ]
+  }
+}

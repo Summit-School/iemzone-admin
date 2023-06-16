@@ -9,10 +9,12 @@ export default function LabelField({
   type,
   placeholder,
   catFxn,
+  shippingFxn,
   ...rest
 }) {
   const handleInput = (text) => {
     if (type === "text") catFxn(text);
+    if (type === "number") shippingFxn(text);
   };
 
   return (
