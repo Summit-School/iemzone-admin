@@ -14,7 +14,7 @@
     "from": "Register a new account"
   },
   "descrip": "Elit Iusto dolore libero recusandae dolor dolores explicabo ullam cum facilis aperiam   alias odio quam excepturi molestiae omnis inventore. Repudiandae officia placeat amet consectetur dicta dolorem quo",
-  "anchor": { "icon": "home", "text": "Back to Home", "path": "/ecommerce" },
+  "anchor": { "icon": "home", "text": "Back to Home", "path": "/dashboard" },
   "input": [
     {
       "icon": "account_circle",

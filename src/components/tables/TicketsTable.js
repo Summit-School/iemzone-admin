@@ -71,29 +71,6 @@ export default function ShopsTable({ thead, tbody }) {
       });
   };
 
-  const UnverifyStoreHandler = () => {
-    setLoading(true);
-    const data = {
-      id: shopData._id,
-      verified: false,
-    };
-    dispatch(verifyShop(data))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          toast.success("success");
-          setLoading(false);
-          setBlockModal(false);
-        } else {
-          toast.error("An error occurred");
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  };
-
   return (
     <Box className="mc-table-responsive">
       <Table className="mc-table">
@@ -134,8 +111,10 @@ export default function ShopsTable({ thead, tbody }) {
                 </Td>
                 <Td title={item.name}>
                   <Box className="mc-table-profile">
-                    <Image src={`${item.profilePicture}`} alt={item.alt} />
-                    <Text>{item.name}</Text>
+                    <Image src={`${item.user.avatar}`} alt={item.alt} />
+                    <Text>
+                      {item.user.name.firstName} {item.user.name.lastName}
+                    </Text>
                   </Box>
                 </Td>
                 {/* <Td title={item?.role}>
@@ -163,21 +142,21 @@ export default function ShopsTable({ thead, tbody }) {
                   <Text as="span">{item.role.text}</Text>
                 </Box>
               </Td> */}
-                <Td title={item.email}>{item.email}</Td>
-                <Td title={item.phone}>{item.phone}</Td>
+                <Td title={item.subject}>{item.subject}</Td>
+                <Td title={item.priority}>{item.priority}</Td>
                 <Td title={item.status}>
-                  {item.verified === true && (
-                    <Text className="mc-table-badge green">{"Verified"}</Text>
+                  {item.status === "open" && (
+                    <Text className="mc-table-badge green">{"Open"}</Text>
                   )}
-                  {item.verified === false && (
-                    <Text className="mc-table-badge red">{"Unverified"}</Text>
+                  {item.verified === "closed" && (
+                    <Text className="mc-table-badge red">{"Closed"}</Text>
                   )}
                 </Td>
                 <Td title={item.created}>{item.createdAt}</Td>
                 <Td>
                   <Box className="mc-table-action">
                     <Anchor
-                      href={`/shop-profile/${item._id}`}
+                      href={`/support-ticket-detail/${item._id}`}
                       title="View"
                       className="material-icons view"
                     >
@@ -268,7 +247,7 @@ export default function ShopsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-danger"
-              onClick={UnverifyStoreHandler}
+              // onClick={UnverifyStoreHandler}
             >
               {loading ? "loading..." : " yes, Unverify"}
             </Button>

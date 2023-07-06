@@ -22,3 +22,5 @@ export { default as ShopProfile } from "./ShopProfile";
 export { default as CategoryList } from "./CategoryList";
 export { default as CategoryUpload } from "./CategoryUpload";
 export { default as UpdateShippingFee } from "./UpdateShippingFee";
+export { default as SupportTicketList } from "./SupportTicketList";
+export { default as SupportTicketDetail } from "./SupportTicketDetail";

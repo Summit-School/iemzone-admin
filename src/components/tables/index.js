@@ -6,3 +6,4 @@ export { default as OrdersTable } from "./OrdersTable";
 export { default as UsersTable } from "./UsersTable";
 export { default as PagesTable } from "./PagesTable";
 export { default as DealsTable } from "./DealsTable";
+export { default as TicketsTable } from "./DealsTable";

@@ -42,6 +42,8 @@ import {
   CategoryList,
   CategoryUpload,
   UpdateShippingFee,
+  SupportTicketList,
+  SupportTicketDetail,
 } from "./pages/master";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -70,6 +72,11 @@ export default function App() {
 
             <Route path="/category-list" element={<CategoryList />} />
             <Route path="/category-upload" element={<CategoryUpload />} />
+            <Route path="/support-tickets" element={<SupportTicketList />} />
+            <Route
+              path="/support-ticket-detail/:id"
+              element={<SupportTicketDetail />}
+            />
 
             <Route
               path="/update-shipping-fee"

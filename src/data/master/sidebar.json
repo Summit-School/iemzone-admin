@@ -72,6 +72,11 @@
         },
         {
           "icon": "article",
+          "text": "Support Tickets",
+          "href": "/support-tickets"
+        },
+        {
+          "icon": "article",
           "text": "invoices",
           "href": "/invoice-list",
           "_submenu": [
