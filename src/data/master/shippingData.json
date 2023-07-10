@@ -2,8 +2,8 @@
   "pageTitle": "Update Shipping Fee",
   "breadcrumb": [
     { "path": "/", "text": "home" },
-    { "text": "category" },
-    { "text": "upload" }
+    { "text": "shipping fee" },
+    { "text": "update" }
   ],
   "title": "add new category",
   "button": { "path": "#", "icon": "visibility", "text": "show all products" },

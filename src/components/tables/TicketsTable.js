@@ -14,16 +14,15 @@ import {
 } from "../elements";
 // import userInfo from "../../data/master/userList.json";
 import { useDispatch } from "react-redux";
-import { verifyShop } from "../../redux/reducers/shops";
+import { updateTicketStatus } from "../../redux/reducers/supportTicket";
 import { toast } from "react-toastify";
 
 export default function ShopsTable({ thead, tbody }) {
   const [data, setData] = useState([]);
-  const [userData, setUserData] = React.useState("");
   const [editModal, setEditModal] = React.useState(false);
   const [blockModal, setBlockModal] = React.useState(false);
-  const [verStatus, setVerStatus] = React.useState(false);
-  const [shopData, setShopData] = React.useState(null);
+  const [ticketStatus, setTicketStatus] = React.useState("");
+  const [ticketData, setTicketData] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
   const dispatch = useDispatch();
@@ -48,27 +47,54 @@ export default function ShopsTable({ thead, tbody }) {
     }
   };
 
-  const verifyStore = () => {
-    setLoading(true);
-    const data = {
-      id: shopData._id,
-      verified: verStatus,
-    };
-    dispatch(verifyShop(data))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          toast.success("success");
+  const updateTicketStatusHandler = () => {
+    if (ticketData !== null && ticketStatus !== "") {
+      setLoading(true);
+      const data = {
+        ticketId: ticketData._id,
+        status: ticketStatus,
+      };
+      dispatch(updateTicketStatus(data))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            toast.success("Ticket status updated successfully");
+            setLoading(false);
+            setEditModal(false);
+          } else {
+            toast.error("An error occurred");
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
           setLoading(false);
-          setEditModal(false);
-        } else {
-          toast.error("An error occurred");
+        });
+    }
+  };
+
+  const closeTicketStatusHandler = () => {
+    if (ticketData !== null) {
+      setLoading(true);
+      const data = {
+        ticketId: ticketData._id,
+        status: "closed",
+      };
+      dispatch(updateTicketStatus(data))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            toast.success("Ticket closed successfully");
+            setLoading(false);
+            setBlockModal(false);
+          } else {
+            toast.error("An error occurred");
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
           setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+        });
+    }
   };
 
   return (
@@ -148,7 +174,7 @@ export default function ShopsTable({ thead, tbody }) {
                   {item.status === "open" && (
                     <Text className="mc-table-badge green">{"Open"}</Text>
                   )}
-                  {item.verified === "closed" && (
+                  {item.status === "closed" && (
                     <Text className="mc-table-badge red">{"Closed"}</Text>
                   )}
                 </Td>
@@ -166,7 +192,7 @@ export default function ShopsTable({ thead, tbody }) {
                     <Button
                       title="Edit"
                       className="material-icons edit"
-                      onClick={() => setEditModal(true, setShopData(item))}
+                      onClick={() => setEditModal(true, setTicketData(item))}
                     >
                       {/* {item.action.edit} */}
                       edit
@@ -174,7 +200,7 @@ export default function ShopsTable({ thead, tbody }) {
                     <Button
                       title="Block"
                       className="material-icons block"
-                      onClick={() => setBlockModal(true, setShopData(item))}
+                      onClick={() => setBlockModal(true, setTicketData(item))}
                     >
                       {/* {item.action.block} */}
                       block
@@ -188,12 +214,15 @@ export default function ShopsTable({ thead, tbody }) {
       </Table>
       <Modal
         show={editModal}
-        onHide={() => setEditModal(false, setUserData(""))}
+        onHide={() => setEditModal(false, setTicketData(null))}
       >
         <Box className="mc-user-modal">
-          <Image src={userData.src} alt={userData?.alt} />
-          <Heading as="h4">{userData?.name}</Heading>
-          <Text as="p">{userData?.email}</Text>
+          <Image
+            src={ticketData?.user.avatar}
+            alt={ticketData?.user.name.firstName}
+          />
+          <Heading as="h4">{ticketData?.user.name.firstName}</Heading>
+          <Text as="p">{ticketData?.user.email}</Text>
           {/* <Form.Group className="form-group inline mb-4">
             <Form.Label>role</Form.Label>
             <Form.Select>
@@ -207,10 +236,10 @@ export default function ShopsTable({ thead, tbody }) {
           </Form.Group> */}
           <Form.Group className="form-group inline">
             <Form.Label>status</Form.Label>
-            <Form.Select onChange={(e) => setVerStatus(e.target.value)}>
+            <Form.Select onChange={(e) => setTicketStatus(e.target.value)}>
               <Option>Select status</Option>
-              <Option value={true}>Verify</Option>
-              <Option value={false}>Unverify</Option>
+              <Option value="open">Open</Option>
+              <Option value="closed">Close</Option>
             </Form.Select>
           </Form.Group>
           <Modal.Footer>
@@ -224,7 +253,7 @@ export default function ShopsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-success"
-              onClick={verifyStore}
+              onClick={updateTicketStatusHandler}
             >
               {loading ? "loading..." : "save Changes"}
             </Button>
@@ -235,7 +264,7 @@ export default function ShopsTable({ thead, tbody }) {
         <Box className="mc-alert-modal">
           <Icon type="new_releases" />
           <Heading as="h3">are your sure!</Heading>
-          <Text as="p">Want to Unverify this shop's account?</Text>
+          <Text as="p">Want to Close this ticket?</Text>
           <Modal.Footer>
             <Button
               type="button"
@@ -247,9 +276,9 @@ export default function ShopsTable({ thead, tbody }) {
             <Button
               type="button"
               className="btn btn-danger"
-              // onClick={UnverifyStoreHandler}
+              onClick={closeTicketStatusHandler}
             >
-              {loading ? "loading..." : " yes, Unverify"}
+              {loading ? "loading..." : " yes, Close"}
             </Button>
           </Modal.Footer>
         </Box>
